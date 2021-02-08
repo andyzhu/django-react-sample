@@ -40,11 +40,14 @@ INSTALLED_APPS = [
 
     ## 3rd party apps
     'rest_framework',
+    'corsheaders',
     
     ## local apps
     'books',
 
 ]
+# config the cors headers
+CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', ## add cors middleware
 ]
 
 ROOT_URLCONF = 'DjangoReact.urls'

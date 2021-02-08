@@ -4,7 +4,7 @@ from .models import Book
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
-        model: Book
+        model = Book
         fields = ['name', 'author', 'description']
     
     def validate_description(self, value):

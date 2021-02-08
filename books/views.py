@@ -22,6 +22,26 @@ def home_view(request, *args, **kwargs):
 #     return HttpResponse(f'<h1>Book: {obj.name} author: {obj.author} </h1>')
 
 # version 2
+
+# def book_detail_view(request, book_id, *args, **kwargs):
+#     data = {
+#         "id": book_id
+#     }
+#     status = 200
+#     try:
+#         obj = Book.objects.get(id=book_id)
+#         data['name']=obj.name
+#         data['author']=obj.author
+#         data['description'] = obj.description
+
+#     except:
+#         data['message'] = 'Not Found'
+#         status = 404
+#     return JsonResponse(data, status=status)
+
+
+# version 3
+@api_view(['GET'])
 def book_detail_view(request, book_id, *args, **kwargs):
     data = {
         "id": book_id
@@ -32,11 +52,11 @@ def book_detail_view(request, book_id, *args, **kwargs):
         data['name']=obj.name
         data['author']=obj.author
         data['description'] = obj.description
-
+        data['status'] =200
     except:
         data['message'] = 'Not Found'
-        status = 404
-    return JsonResponse(data, status=status)
+        data['status'] = 404
+    return Response(data, status=status)
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
@@ -59,7 +79,7 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 # Our return method is Response instead of JsonResponse now.
 @api_view(['POST'])
 def book_create_view(request, *args, **kwargs):
-    serializer = BookSerializer(data=request.POST or None)
+    serializer = BookSerializer(data=request.data or None)
     if serializer.is_valid(raise_exception=True):
         serializer.save()
         return Response(serializer.data, status=200)
@@ -75,12 +95,13 @@ def book_create_view_pure(request, *args, **kwargs):
             return redirect(next_url)
         form = BookForm()	        
     return render(request, 'components/form.html', context={'form': form}) 
-
+@api_view(['GET'])
 def books_list(request, *args, **kwargs):
     blist = Book.objects.all()
     books = [x.serialize() for x in blist]
     data = {
         'response': books
     }
+    
     return JsonResponse(data)
 

@@ -12,7 +12,6 @@ class Book(models.Model):
             'id': self.id,
             'name': self.name,
             'author': self.author,
-            'description': self.description,
-            'image': self.image
+            'description': self.description
         }
 
